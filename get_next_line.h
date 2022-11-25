@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 15:05:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/15 16:10:41 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/25 00:01:48 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # include <limits.h>
 # include <stdarg.h>
 # include <stdint.h>
+# include <fcntl.h>
 
 # define UPHEX "0123456789ABCDEF"
 # define LOWHEX "0123456789abcdef"
@@ -31,5 +32,10 @@
     # define BF_SIZE BUFSIZ
 #endif
 
+size_t  ft_strlen(const char *c);
+char    *ft_strchr(const char *s, int c);
+// void    *ft_memcpy(void *dst, const void *src, size_t n);
+void	*ft_memmove(void *dst, const void *src, size_t len);
+char    *load_file(char *str, int fd);
 
 #endif
