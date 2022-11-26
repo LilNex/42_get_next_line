@@ -6,31 +6,37 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/26 02:23:34 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/26 03:22:55 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-void get_next_line(int fd)
+char *get_next_line(int fd)
 {
 	static char	*str;
-	// int			len;
-
-	// str = malloc(BF_SIZE + 1);
-	// len = read(fd, str, BF_SIZE);
-	// while (!ft_strchr(str,'\n'))
-	// {
-	// 	str = malloc(ft_strlen(str) + BF_SIZE + 1);
-	// }
-	if(!str)
-		str = malloc(BF_SIZE + 1);
-	char *c = load_file(str,fd);
-	
-
+	char		*tmp;
+	char		*t;
+	int			n;
+	if (!str)
+		str = ft_calloc(BF_SIZE,sizeof(char));
+	while (!ft_strchr(str,'\n'))
+	{
+		n =ft_strlen(str) + BF_SIZE + 1;
+		tmp = ft_calloc(n,sizeof(char));
+		t = ft_calloc(BF_SIZE + 1,sizeof(char));
+		if(!read(fd,t,BF_SIZE))
+			return t;
+			// printf("str is : %s\n",t);
+		t = ft_strjoin(str,t);
+		free(str);
+		str = ft_strdup(t);
+		free(t);
+	}
+	t = ft_strcut(&str,'\n');
 	// printf("len is : %d\n",len);
-	printf("str is : %s\n",c);
-
+	// printf("str is : %s\n",t);
+	return t;
 }
 
 int main()
@@ -41,11 +47,12 @@ int main()
 
 	printf("the fd is : %d \n",fd);
 	// printf("the default BUFFERSIZE is : %d\n",BF_SIZE);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
-	get_next_line(fd);
+	printf("line : %s",get_next_line(fd));
+	printf("line : %s",get_next_line(fd));
+	printf("line : %s",get_next_line(fd));
+	printf("line : %s",get_next_line(fd));
+	printf("line : %s",get_next_line(fd));
+	printf("line : %s",get_next_line(fd));
 
 
 	return (0);

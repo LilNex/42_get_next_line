@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 23:15:12 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/26 02:30:25 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/26 03:16:54 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -160,7 +160,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-char *ft_strcut(char *s,char c)
+char *ft_strcut(char **s,char c)
 {
 	char	*pos;
 	int		len;
@@ -168,101 +168,49 @@ char *ft_strcut(char *s,char c)
 	int		i;
 
 	i = 0;
-	pos = ft_strchr(s, c);
-	len = pos - s;
+	pos = ft_strchr(*s, c);
+	len = pos - *s;
 	str = ft_calloc(len, sizeof(char));
-	while (s[i] != c)
+	while ((*s)[i] != c)
 	{
-		str[i] = s[i];
-		if (s[i + 1] == c)
-			str[i + 1] = s[i + 1];
-		else if (s[i + 1] == c)
+		str[i] = (*s)[i];
+		if ((*s)[i + 1] == c)
+		{
+			str[i + 1] = (*s)[i + 1];
+			break;
+		}
+		else if ((*s)[i + 1] == c)
 			break;
 		i++;
 	}
-	s = ft_substr(s,len,ft_strlen(s) - len);
+	*s = ft_substr((*s),len + 1,ft_strlen((*s)) - len);
 	return (str);
 
 }
 
-char *load_file(char *str, int fd)
-{
-	static char	*tmp;
-	char	*t;
-	int			n;
-
-	if(!tmp)
-		tmp = malloc(BF_SIZE + 1);
-
-	while (!ft_strchr(tmp,'\n'))
-	{
-		n = ft_strlen(tmp) + BF_SIZE + 1;
-
-		t = ft_calloc(n, sizeof(char));
-		
-		
-		if(read(fd, t, BF_SIZE) == 0)
-			return ft_strjoin(tmp,str);
-		tmp = ft_strjoin(tmp,t);
-		
-	}
-	free(t);
-	t = ft_strcut(tmp,'\n');
-
-	return t;
-}
 // char *load_file(char *str, int fd)
 // {
 // 	static char	*tmp;
 // 	char	*t;
 // 	int			n;
 
-// 	if(!str)
-// 		str = malloc(BF_SIZE + 1);
+// 	if(!tmp)
+// 		tmp = malloc(BF_SIZE + 1);
 
-// 	while (!ft_strchr(str,'\n'))
+// 	while (!ft_strchr(tmp,'\n'))
 // 	{
-// 		n = ft_strlen(str) + BF_SIZE + 1;
+// 		n = ft_strlen(tmp) + BF_SIZE + 1;
 
-// 		tmp = ft_calloc(n, sizeof(char));
+// 		t = ft_calloc(n, sizeof(char));
 		
-// 		// ft_memmove(tmp, str, ft_strlen(str));
 		
-// 		// str = ft_realloc(str,n);
-		
-// 		if(read(fd, str, BF_SIZE) == 0)
+// 		if(read(fd, t, BF_SIZE) == 0)
 // 			return ft_strjoin(tmp,str);
+// 		tmp = ft_strjoin(tmp,t);
 		
-// 		str = ft_strjoin(tmp,str);
-		
-// 		free(tmp);
 // 	}
-// 	// free(t);
-// 	t = ft_strcut(str,'\n');
+// 	free(t);
+// 	t = ft_strcut(tmp,'\n');
 
 // 	return t;
 // }
-
-// char *get_line(char *str)
-
-// char *load_file(char *str, int fd)
-// {
-// 	char	*tmp;
-// 	int		n;
-
-// 	while (!ft_strchr(str, '\n'))
-// 	{
-// 		n = ft_strlen(str) + BF_SIZE + 1;
-// 		tmp = ft_calloc(n, sizeof(char));
-// 		ft_memmove(tmp, str, ft_strlen(str));
-// 		str = ft_realloc(str,n);
-// 		if (read(fd, str, BF_SIZE) == 0)
-// 			return (ft_strjoin(tmp, str));
-// 		str = ft_strjoin(tmp, str);
-// 		free(tmp);
-// 	}
-// 	// str[ft_strlen(str)] = 0;
-// 	return ft_substr(str,0,ft_strchr(str, '\n')-str);
-// }
-
-// // char *get_line(char *str)
