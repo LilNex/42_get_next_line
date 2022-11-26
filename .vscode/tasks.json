@@ -35,7 +35,7 @@
                 "-g",
                 "get_next_line_utils.c",
                 "get_next_line.h",
-                "-D BUFFER_SIZE=1",
+                "-D BUFFER_SIZE=10",
            
                 // "-o",
                 // "main",
