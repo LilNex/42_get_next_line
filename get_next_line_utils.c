@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 23:15:12 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/26 03:16:54 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/26 17:11:49 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,20 +170,37 @@ char *ft_strcut(char **s,char c)
 	i = 0;
 	pos = ft_strchr(*s, c);
 	len = pos - *s;
+	// printf("addr pos : %p\n",pos);
+	// printf("addr   s : %p\n",*s);
+	// printf("len: %d\n",len);
+	// printf()
 	str = ft_calloc(len, sizeof(char));
 	while ((*s)[i] != c)
 	{
 		str[i] = (*s)[i];
+		// printf("%d | cut s : %s\n",i, str);
 		if ((*s)[i + 1] == c)
 		{
 			str[i + 1] = (*s)[i + 1];
+			i++;
 			break;
 		}
-		else if ((*s)[i + 1] == c)
+		else if ((*s)[i + 1] == c){
+			str[++i] = 0;
 			break;
+		}
 		i++;
 	}
-	*s = ft_substr((*s),len + 1,ft_strlen((*s)) - len);
+	str[++i] = 0;
+	// printf("%d | cut s : %s\n",i, str);
+	int  l = ft_strlen((*s))-len;
+	// printf("the len is : %lu\n",(size_t)l);
+	*s = ft_substr((*s), len+1, l );
+	// printf("cut s : %s\n",*s);
+	// printf("cut str : %s\n",str);
+	// printf("cut len : %d\n", len + 1);
+	// printf("cut strlen : %d\n", l);
+	// printf("cut start : %lu\n",len -ft_strlen((*s)) );
 	return (str);
 
 }

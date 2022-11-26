@@ -1,8 +1,8 @@
 
-NAME = libftprintf.a
-HDRS = ft_printf.h
+NAME = get_next_line.a
+HDRS = get_next_line.h
 SOURCES = \
-	ft_printf.c ft_utils.c ft_utils2.c \
+	get_next_line.c get_next_line_utils.c \
 
 OBJECTS = $(SOURCES:.c=.o)
 
