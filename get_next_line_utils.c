@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 23:15:12 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/27 12:27:38 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/27 13:09:19 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,8 @@ size_t	ft_strlen(const char *c)
 	size_t	i;
 
 	i = 0;
+	if(!c)
+		return (0);
 	while (c[i] != '\0')
 		i++;
 	return (i);
@@ -160,7 +162,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-char *ft_strcut(char **s,char c, int *last)
+char *ft_strcut(char **s, char c, int *last)
 {
 	char	*pos;
 	int		len;
@@ -181,14 +183,12 @@ char *ft_strcut(char **s,char c, int *last)
 	while ((*s)[i] != c && str)
 	{
 		str[i] = (*s)[i];
-		// printf("%d | cut s : %s\n",i, str);
 		if ((*s)[i + 1] == c)
 		{
 			str[i + 1] = (*s)[i + 1];
 			i++;
 			break;
 		}
-
 		else if ((*s)[i + 1] == '\0')
 		{
 			str[i + 1] = '\0';
@@ -199,7 +199,6 @@ char *ft_strcut(char **s,char c, int *last)
 	if(!*last)  
 		*s = ft_substr((*s),len + 1,ft_strlen((*s)) - len);
 	else *s = 0;
-
 	return (str);
 }
 

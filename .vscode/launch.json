@@ -10,7 +10,7 @@
       "cwd": "${fileDirname}",
       "environment": [],
       "externalConsole": false,
-      "MIMode": "gdb",
+      "MIMode": "gcc",
       "setupCommands": [
           {
               "description": "Enable pretty-printing for gdb",
