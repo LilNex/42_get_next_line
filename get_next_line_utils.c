@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/24 23:15:12 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/26 17:11:49 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/27 12:27:38 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,15 +31,15 @@ void	*ft_calloc(size_t count, size_t size)
 		return (NULL);
 	if (count == 0 || size == 0)
 	{
-		count = 1;
+		count = 1; 
 		size = count;
 	}
 	c = count * size;
 	ptr = malloc(c);
 	if (!ptr)
 		return (NULL);
-	while (--c >= 0)
-		*(char*)&ptr[c] = 0;
+	while (--c > 0)
+		*((char *)(ptr + c)) = '\0';
 	return ((void *)ptr);
 }
 
@@ -100,7 +100,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	size = (ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1);
 	str = ft_calloc(size, sizeof(char));
-	if (str == '\0')
+	if (!str)
 		return (str);
 	i = 0;
 	while (*s1)
@@ -160,7 +160,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-char *ft_strcut(char **s,char c)
+char *ft_strcut(char **s,char c, int *last)
 {
 	char	*pos;
 	int		len;
@@ -169,13 +169,16 @@ char *ft_strcut(char **s,char c)
 
 	i = 0;
 	pos = ft_strchr(*s, c);
-	len = pos - *s;
-	// printf("addr pos : %p\n",pos);
-	// printf("addr   s : %p\n",*s);
-	// printf("len: %d\n",len);
-	// printf()
+
+	if (!*s && (!pos))
+		return (*s);
+	if(pos)
+		len = pos - *s;
+	else
+		len = ft_strlen(*s);
+
 	str = ft_calloc(len, sizeof(char));
-	while ((*s)[i] != c)
+	while ((*s)[i] != c && str)
 	{
 		str[i] = (*s)[i];
 		// printf("%d | cut s : %s\n",i, str);
@@ -185,24 +188,19 @@ char *ft_strcut(char **s,char c)
 			i++;
 			break;
 		}
-		else if ((*s)[i + 1] == c){
-			str[++i] = 0;
+
+		else if ((*s)[i + 1] == '\0')
+		{
+			str[i + 1] = '\0';
 			break;
 		}
 		i++;
 	}
-	str[++i] = 0;
-	// printf("%d | cut s : %s\n",i, str);
-	int  l = ft_strlen((*s))-len;
-	// printf("the len is : %lu\n",(size_t)l);
-	*s = ft_substr((*s), len+1, l );
-	// printf("cut s : %s\n",*s);
-	// printf("cut str : %s\n",str);
-	// printf("cut len : %d\n", len + 1);
-	// printf("cut strlen : %d\n", l);
-	// printf("cut start : %lu\n",len -ft_strlen((*s)) );
-	return (str);
+	if(!*last)  
+		*s = ft_substr((*s),len + 1,ft_strlen((*s)) - len);
+	else *s = 0;
 
+	return (str);
 }
 
 // char *load_file(char *str, int fd)

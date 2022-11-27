@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 15:05:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/26 17:14:52 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/27 12:25:03 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strdup(const char *s1);
 void	*ft_calloc(size_t count, size_t size);
 char	*ft_strjoin(char const *s1, char const *s2);
-char    *ft_strcut(char **s,char c);
+char    *ft_strcut(char **s, char c, int *last);
 char    *get_next_line(int fd);
 
 #endif
