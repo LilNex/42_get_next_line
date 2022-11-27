@@ -30,12 +30,13 @@
             "label": "build",
             "command": "/usr/bin/gcc",
             "args": [
-                "${file}",
+                // "${file}",
+                "get_next_line.c",
                 "-W -W -W",
                 "-g",
                 "get_next_line_utils.c",
                 "get_next_line.h",
-                "-D BUFFER_SIZE=10",
+                "-D BUFFER_SIZE=1",
            
                 // "-o",
                 // "main",
@@ -49,6 +50,35 @@
             ],
             "group": "build",
             "detail": "compiler: /usr/bin/gcc"
+        },
+        {
+            "type": "process",
+            "label": "buildLinux",
+            "command": "/usr/bin/gcc",
+            "args": [
+                // "${file}",
+                "get_next_line.c",
+                "-g",
+                "get_next_line_utils.c",
+                "get_next_line.h",
+                "-D BUFFER_SIZE=15",
+                "-Wall",
+                "-Werror",
+                // "-Wextra",
+           
+                // "-o")
+                // "main",
+                
+            ],
+            "options": {
+                "cwd": "${fileDirname}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": "build",
+            "detail": "compiler: /usr/bin/gcc"
+        
         }
     ]
 }

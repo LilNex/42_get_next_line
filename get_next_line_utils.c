@@ -31,15 +31,15 @@ void	*ft_calloc(size_t count, size_t size)
 		return (NULL);
 	if (count == 0 || size == 0)
 	{
-		count = 1;
+		count = 1; 
 		size = count;
 	}
 	c = count * size;
 	ptr = malloc(c);
 	if (!ptr)
 		return (NULL);
-	while (--c >= 0)
-		*(char*)&ptr[c] = 0;
+	while (--c > 0)
+		*((char *)(ptr + c)) = '\0';
 	return ((void *)ptr);
 }
 
@@ -100,7 +100,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 		return (NULL);
 	size = (ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1);
 	str = ft_calloc(size, sizeof(char));
-	if (str == '\0')
+	if (!str)
 		return (str);
 	i = 0;
 	while (*s1)
@@ -160,7 +160,7 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	str[i] = '\0';
 	return (str);
 }
-char *ft_strcut(char **s,char c)
+char *ft_strcut(char **s,char c, int *last)
 {
 	char	*pos;
 	int		len;
@@ -169,9 +169,14 @@ char *ft_strcut(char **s,char c)
 
 	i = 0;
 	pos = ft_strchr(*s, c);
-	len = pos - *s;
+	if (!*s && (!pos))
+		return (*s);
+	if(pos)
+		len = pos - *s;
+	else
+		len = ft_strlen(*s);
 	str = ft_calloc(len, sizeof(char));
-	while ((*s)[i] != c)
+	while ((*s)[i] != c && str)
 	{
 		str[i] = (*s)[i];
 		if ((*s)[i + 1] == c)
@@ -179,13 +184,17 @@ char *ft_strcut(char **s,char c)
 			str[i + 1] = (*s)[i + 1];
 			break;
 		}
-		else if ((*s)[i + 1] == c)
+		else if ((*s)[i + 1] == '\0')
+		{
+			str[i + 1] = '\0';
 			break;
+		}
 		i++;
 	}
-	*s = ft_substr((*s),len + 1,ft_strlen((*s)) - len);
+	if(!*last)  
+		*s = ft_substr((*s),len + 1,ft_strlen((*s)) - len);
+	else *s = 0;
 	return (str);
-
 }
 
 // char *load_file(char *str, int fd)
