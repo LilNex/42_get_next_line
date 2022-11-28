@@ -6,60 +6,108 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/27 13:14:53 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/27 20:53:11 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-char *get_next_line(int fd)
+size_t	ft_strlen(const char *c)
 {
-	static char	*str;
-	static int	last;
-	char		*t;
+	size_t	i;
 
-	last = 0;
-	if (!str && !last)
-		str = ft_calloc(BF_SIZE, sizeof(char));
-	while (!ft_strchr(str, '\n') && str)
-	{
-		t = ft_calloc(BF_SIZE + 1, sizeof(char));
-		if (!read(fd, t, BF_SIZE)){
-			if (last)
-				return (NULL);
-			else
-				last = 1;}
-		if (!last && *t || (last && ft_strlen(str) != 0 && ft_strlen(t) != 0))
-		{	t = ft_strjoin(str,t);
-		free(str);
-		str = ft_strdup(t);
-		free(t);
-		t = 0;
-		}
-		if (last)
-			break ;
-	}
-	t = ft_strcut(&str, '\n',&last);
-	if (last) 
-		free(str);
-	return (t);
+	i = 0;
+	if (!c)
+		return (0);
+	while (c[i] != '\0')
+		i++;
+	return (i);
 }
+
+char	*free_ptr(void *ptr)
+{
+	if (ptr)
+	{
+		free(ptr);
+		ptr = NULL;
+	}
+	return (ptr);
+}
+
+char	*cut_line(char **bak_buffer, char **line)
+{
+	char	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = NULL;
+	while (*(*bak_buffer + i) != '\n' && *(*bak_buffer + i) != '\0')
+		i++;
+	if (*(*bak_buffer + i) == '\n')
+	{
+		i++;
+		*line = ft_substr(*bak_buffer, 0, i);
+		tmp = ft_strdup(*bak_buffer + i);
+	}
+	else
+		*line = ft_strdup(*bak_buffer);
+	free_ptr(*bak_buffer);
+	return (tmp);
+}
+
+int	read_lines(int fd, char **buffer, char **bak_buffer, char **line)
+{
+	int		bytes;
+	char	*tmp;
+
+	bytes = 1;
+	tmp = NULL;
+	while (!ft_strchr(*bak_buffer, '\n') && bytes)
+	{
+		bytes = read(fd, *buffer, BF_SIZE);
+		(*buffer)[bytes] = '\0';
+		tmp = *bak_buffer;
+		*bak_buffer = ft_strjoin(tmp, *buffer);
+		free(tmp);
+	}
+	free_ptr(*buffer);
+	*bak_buffer = cut_line(bak_buffer, line);
+	if (!(*line))
+		free_ptr(*line);
+	return (bytes);
+}
+
+char	*get_next_line(int fd)
+{
+	static char	*bak_buffer;
+	char		*buffer;
+	char		*line;
+
+	buffer = ft_calloc(BF_SIZE, sizeof(char));
+	if (fd < 0 || fd > 1024 || BF_SIZE < 0)
+		return (NULL);
+	if (read(fd, buffer, 0) < 0)
+		return (free_ptr(buffer));
+	if (!bak_buffer)
+		bak_buffer = ft_strdup("");
+	if (!read_lines(fd, &buffer, &bak_buffer, &line) && !(*line))
+		return (NULL);
+	return (line);
+}
+
+
 int main()
 {
-	// printf("Hello World \n\n");
-	// printf("Openning the file ...\n");
 	int fd = open("file.txt", O_RDONLY);
-
 	printf("the fd is : %d \n",fd);
-	// printf("the default BUFFERSIZE is : %d\n",BF_SIZE);
 	printf("line : %s",get_next_line(fd));
 	printf("line : %s",get_next_line(fd));
 	printf("line : %s",get_next_line(fd));
 	printf("line : %s",get_next_line(fd));
 	printf("line : %s",get_next_line(fd));
 	printf("line : %s",get_next_line(fd));
-
-
+	printf("line : %s",get_next_line(fd));
+	printf("line : %s",get_next_line(fd));
 	return (0);
 }
 
