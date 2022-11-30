@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/30 11:50:06 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/30 18:18:18 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ char	*get_next_line(int fd)
 {
 	static char	*bak_buffer;
 	char		*buffer;
-	static char	*line;
+	static char	*line = NULL;
 
 	free_ptr(line);
 	buffer = ft_calloc(BF_SIZE + 1, sizeof(char));
@@ -95,7 +95,7 @@ char	*get_next_line(int fd)
 	if (!bak_buffer)
 		bak_buffer = ft_strdup("");
 	if (!read_lines(fd, &buffer, &bak_buffer, &line) && !(*line) && buffer)
-		return (free(bak_buffer), NULL);
+		return (free_ptr(bak_buffer), NULL);
 	return (line);
 }
 
@@ -112,11 +112,18 @@ char	*get_next_line(int fd)
 // 	printf("line : %s",get_next_line(fd));
 // 	printf("line : %s",get_next_line(fd));
 // 	printf("line : %s",get_next_line(fd));
-// 	// printf("line : %s",get_next_line(fd));
-// 	// while (1)
-// 	// 	;
-	
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("fin");
+// 	while (1)
+// 		;
 // 	return (0);
 // }
-
-

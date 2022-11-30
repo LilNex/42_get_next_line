@@ -1,7 +1,7 @@
 for (( ; ; ))
 do
 	clear	
-	gcc get_next_line.c get_next_line_utils.c -Wall -Werror -Wextra -D BUFFER_SIZE=42
+	gcc get_next_line.c get_next_line_utils.c -Wall -Werror -Wextra -D BUFFER_SIZE=1 -fsanitize=address
 	sleep 0.3
 	clear
 	#timeout 2s
