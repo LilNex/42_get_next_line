@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/30 18:45:29 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/30 18:44:54 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *c)
 {
@@ -82,48 +82,20 @@ int	read_lines(int fd, char **buffer, char **bak_buffer, char **line)
 
 char	*get_next_line(int fd)
 {
-	static char	*bak_buffer;
+	static char	*bak_buffer[1024];
 	char		*buffer;
-	static char	*line = NULL;
+	static char	*line[1024];
 
-	free_ptr(line);
+	free_ptr(line[fd]);
 	buffer = ft_calloc(BF_SIZE + 1, sizeof(char));
 	if (fd < 0 || fd > 1024 || BF_SIZE < 0)
 		return (free_ptr(buffer));
 	if (read(fd, buffer, 0) < 0)
 		return (free_ptr(buffer));
-	if (!bak_buffer)
-		bak_buffer = ft_strdup("");
-	if (!read_lines(fd, &buffer, &bak_buffer, &line) && !(*line) && buffer)
-		return (free_ptr(bak_buffer), NULL);
-	return (line);
+	if (!bak_buffer[fd])
+		bak_buffer[fd] = ft_strdup("");
+	if (!read_lines(fd, &buffer, &bak_buffer[fd], &line[fd])
+		&& !(*line[fd]) && buffer)
+		return (free_ptr(bak_buffer[fd]), NULL);
+	return (line[fd]);
 }
-
-// int main()
-// {
-// 	int fd = open("file.txt", O_RDONLY);
-// 	printf("the fd is : %d \n",fd);
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("fin");
-// 	while (1)
-// 		;
-// 	return (0);
-// }

@@ -6,7 +6,8 @@
     "stddef.h": "c",
     "libft.h": "c",
     "stdlib.h": "c",
-    "sstream": "c"
+    "sstream": "c",
+    "get_next_line_bonus.h": "c"
   },
   "C_Cpp_Runner.msvcBatchPath": "",
   "C_Cpp_Runner.cCompilerPath": "gcc",
