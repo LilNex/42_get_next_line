@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/29 19:53:03 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/11/30 11:50:06 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,8 +84,9 @@ char	*get_next_line(int fd)
 {
 	static char	*bak_buffer;
 	char		*buffer;
-	char		*line;
+	static char	*line;
 
+	free_ptr(line);
 	buffer = ft_calloc(BF_SIZE + 1, sizeof(char));
 	if (fd < 0 || fd > 1024 || BF_SIZE < 0)
 		return (free_ptr(buffer));
@@ -94,6 +95,28 @@ char	*get_next_line(int fd)
 	if (!bak_buffer)
 		bak_buffer = ft_strdup("");
 	if (!read_lines(fd, &buffer, &bak_buffer, &line) && !(*line) && buffer)
-		return (NULL);
+		return (free(bak_buffer), NULL);
 	return (line);
 }
+
+// int main()
+// {
+// 	int fd = open("file.txt", O_RDONLY);
+// 	printf("the fd is : %d \n",fd);
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	printf("line : %s",get_next_line(fd));
+// 	// printf("line : %s",get_next_line(fd));
+// 	// while (1)
+// 	// 	;
+	
+// 	return (0);
+// }
+
+
