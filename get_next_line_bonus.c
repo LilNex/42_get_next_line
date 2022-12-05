@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/30 18:44:54 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/12/05 12:02:10 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	read_lines(int fd, char **buffer, char **bak_buffer, char **line)
 	tmp = NULL;
 	while (!ft_strchr(*bak_buffer, '\n') && bytes)
 	{
-		bytes = read(fd, *buffer, BF_SIZE);
+		bytes = read(fd, *buffer, BUFFER_SIZE);
 		if (bytes)
 		{
 			(*buffer)[bytes] = '\0';
@@ -82,13 +82,13 @@ int	read_lines(int fd, char **buffer, char **bak_buffer, char **line)
 
 char	*get_next_line(int fd)
 {
-	static char	*bak_buffer[1024];
+	static char	*bak_buffer[10240];
 	char		*buffer;
-	static char	*line[1024];
+	static char	*line[10240];
 
 	free_ptr(line[fd]);
-	buffer = ft_calloc(BF_SIZE + 1, sizeof(char));
-	if (fd < 0 || fd > 1024 || BF_SIZE < 0)
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
+	if (fd < 0 || BUFFER_SIZE < 0)
 		return (free_ptr(buffer));
 	if (read(fd, buffer, 0) < 0)
 		return (free_ptr(buffer));

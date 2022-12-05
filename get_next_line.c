@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/30 18:45:29 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/12/05 12:23:30 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	read_lines(int fd, char **buffer, char **bak_buffer, char **line)
 	tmp = NULL;
 	while (!ft_strchr(*bak_buffer, '\n') && bytes)
 	{
-		bytes = read(fd, *buffer, BF_SIZE);
+		bytes = read(fd, *buffer, BUFFER_SIZE);
 		if (bytes)
 		{
 			(*buffer)[bytes] = '\0';
@@ -87,8 +87,8 @@ char	*get_next_line(int fd)
 	static char	*line = NULL;
 
 	free_ptr(line);
-	buffer = ft_calloc(BF_SIZE + 1, sizeof(char));
-	if (fd < 0 || fd > 1024 || BF_SIZE < 0)
+	buffer = ft_calloc((int)BUFFER_SIZE + 1, sizeof(char));
+	if (fd < 0 || BUFFER_SIZE < 0)
 		return (free_ptr(buffer));
 	if (read(fd, buffer, 0) < 0)
 		return (free_ptr(buffer));
@@ -98,32 +98,3 @@ char	*get_next_line(int fd)
 		return (free_ptr(bak_buffer), NULL);
 	return (line);
 }
-
-// int main()
-// {
-// 	int fd = open("file.txt", O_RDONLY);
-// 	printf("the fd is : %d \n",fd);
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("line : %s",get_next_line(fd));
-// 	printf("fin");
-// 	while (1)
-// 		;
-// 	return (0);
-// }

@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/13 15:05:25 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/11/30 18:48:42 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/12/05 12:00:43 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,8 @@
 # include <stdint.h>
 # include <fcntl.h>
 
-# ifdef BUFFER_SIZE
-#  define BF_SIZE BUFFER_SIZE
-# else
-#  define BF_SIZE BUFSIZ
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
 # endif
 
 char	*ft_strchr(const char *s, int c);
