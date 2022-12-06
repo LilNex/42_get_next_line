@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/12/05 12:23:30 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/12/06 13:41:40 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,17 +41,20 @@ char	*cut_line(char **bak_buffer, char **line)
 
 	i = 0;
 	tmp = NULL;
-	while (*(*bak_buffer + i) != '\n' && *(*bak_buffer + i) != '\0')
-		i++;
-	if (*(*bak_buffer + i) == '\n')
+	if (*bak_buffer)
 	{
-		i++;
-		*line = ft_substr(*bak_buffer, 0, i);
-		tmp = ft_strdup(*bak_buffer + i);
+		while (*(*bak_buffer + i) != '\n' && *(*bak_buffer + i) != '\0')
+			i++;
+		if (*(*bak_buffer + i) == '\n')
+		{
+			i++;
+			*line = ft_substr(*bak_buffer, 0, i);
+			tmp = ft_strdup(*bak_buffer + i);
+		}
+		else
+			*line = ft_strdup(*bak_buffer);
+		free_ptr(*bak_buffer);
 	}
-	else
-		*line = ft_strdup(*bak_buffer);
-	free_ptr(*bak_buffer);
 	return (tmp);
 }
 
@@ -84,17 +87,16 @@ char	*get_next_line(int fd)
 {
 	static char	*bak_buffer;
 	char		*buffer;
-	static char	*line = NULL;
+	char		*line;
 
-	free_ptr(line);
 	buffer = ft_calloc((int)BUFFER_SIZE + 1, sizeof(char));
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (free_ptr(buffer));
 	if (read(fd, buffer, 0) < 0)
-		return (free_ptr(buffer));
+		return (free_ptr(bak_buffer), free_ptr(buffer));
 	if (!bak_buffer)
 		bak_buffer = ft_strdup("");
 	if (!read_lines(fd, &buffer, &bak_buffer, &line) && !(*line) && buffer)
-		return (free_ptr(bak_buffer), NULL);
+		return (free_ptr(line), free_ptr(bak_buffer), NULL);
 	return (line);
 }
