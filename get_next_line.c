@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/12/06 13:41:40 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/12/07 02:12:59 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,8 @@ char	*cut_line(char **bak_buffer, char **line)
 			*line = ft_strdup(*bak_buffer);
 		free_ptr(*bak_buffer);
 	}
+	else
+		free_ptr(*bak_buffer);
 	return (tmp);
 }
 
@@ -71,9 +73,9 @@ int	read_lines(int fd, char **buffer, char **bak_buffer, char **line)
 		if (bytes)
 		{
 			(*buffer)[bytes] = '\0';
-			tmp = *bak_buffer;
-			*bak_buffer = ft_strjoin(tmp, *buffer);
-			free_ptr(tmp);
+			tmp = ft_strjoin(*bak_buffer, *buffer);
+			free_ptr(*bak_buffer);
+			*bak_buffer = tmp;
 		}
 	}
 	free_ptr(*buffer);
@@ -93,7 +95,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (free_ptr(buffer));
 	if (read(fd, buffer, 0) < 0)
-		return (free_ptr(bak_buffer), free_ptr(buffer));
+		return (free_ptr(bak_buffer), bak_buffer = NULL, free_ptr(buffer));
 	if (!bak_buffer)
 		bak_buffer = ft_strdup("");
 	if (!read_lines(fd, &buffer, &bak_buffer, &line) && !(*line) && buffer)

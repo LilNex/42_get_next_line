@@ -6,7 +6,7 @@
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/12/05 12:02:10 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/12/07 02:11:07 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,18 +84,18 @@ char	*get_next_line(int fd)
 {
 	static char	*bak_buffer[10240];
 	char		*buffer;
-	static char	*line[10240];
+	char		*line[10240];
 
-	free_ptr(line[fd]);
 	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (free_ptr(buffer));
 	if (read(fd, buffer, 0) < 0)
-		return (free_ptr(buffer));
+		return (free_ptr(bak_buffer[fd]), bak_buffer[fd] = NULL,
+			free_ptr(buffer));
 	if (!bak_buffer[fd])
 		bak_buffer[fd] = ft_strdup("");
 	if (!read_lines(fd, &buffer, &bak_buffer[fd], &line[fd])
 		&& !(*line[fd]) && buffer)
-		return (free_ptr(bak_buffer[fd]), NULL);
+		return (free_ptr(line[fd]), free_ptr(bak_buffer[fd]), NULL);
 	return (line[fd]);
 }
