@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.c                                    :+:      :+:    :+:   */
+/*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ichaiq <ichaiq@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/12 23:19:56 by ichaiq            #+#    #+#             */
-/*   Updated: 2022/12/07 02:12:59 by ichaiq           ###   ########.fr       */
+/*   Updated: 2022/12/07 02:11:07 by ichaiq           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 size_t	ft_strlen(const char *c)
 {
@@ -41,22 +41,17 @@ char	*cut_line(char **bak_buffer, char **line)
 
 	i = 0;
 	tmp = NULL;
-	if (*bak_buffer)
+	while (*(*bak_buffer + i) != '\n' && *(*bak_buffer + i) != '\0')
+		i++;
+	if (*(*bak_buffer + i) == '\n')
 	{
-		while (*(*bak_buffer + i) != '\n' && *(*bak_buffer + i) != '\0')
-			i++;
-		if (*(*bak_buffer + i) == '\n')
-		{
-			i++;
-			*line = ft_substr(*bak_buffer, 0, i);
-			tmp = ft_strdup(*bak_buffer + i);
-		}
-		else
-			*line = ft_strdup(*bak_buffer);
-		free_ptr(*bak_buffer);
+		i++;
+		*line = ft_substr(*bak_buffer, 0, i);
+		tmp = ft_strdup(*bak_buffer + i);
 	}
 	else
-		free_ptr(*bak_buffer);
+		*line = ft_strdup(*bak_buffer);
+	free_ptr(*bak_buffer);
 	return (tmp);
 }
 
@@ -73,9 +68,9 @@ int	read_lines(int fd, char **buffer, char **bak_buffer, char **line)
 		if (bytes)
 		{
 			(*buffer)[bytes] = '\0';
-			tmp = ft_strjoin(*bak_buffer, *buffer);
-			free_ptr(*bak_buffer);
-			*bak_buffer = tmp;
+			tmp = *bak_buffer;
+			*bak_buffer = ft_strjoin(tmp, *buffer);
+			free_ptr(tmp);
 		}
 	}
 	free_ptr(*buffer);
@@ -87,18 +82,20 @@ int	read_lines(int fd, char **buffer, char **bak_buffer, char **line)
 
 char	*get_next_line(int fd)
 {
-	static char	*bak_buffer;
+	static char	*bak_buffer[10240];
 	char		*buffer;
-	char		*line;
+	char		*line[10240];
 
-	buffer = ft_calloc((int)BUFFER_SIZE + 1, sizeof(char));
+	buffer = ft_calloc(BUFFER_SIZE + 1, sizeof(char));
 	if (fd < 0 || BUFFER_SIZE < 0)
 		return (free_ptr(buffer));
 	if (read(fd, buffer, 0) < 0)
-		return (free_ptr(bak_buffer), bak_buffer = NULL, free_ptr(buffer));
-	if (!bak_buffer)
-		bak_buffer = ft_strdup("");
-	if (!read_lines(fd, &buffer, &bak_buffer, &line) && !(*line) && buffer)
-		return (free_ptr(line), free_ptr(bak_buffer), NULL);
-	return (line);
+		return (free_ptr(bak_buffer[fd]), bak_buffer[fd] = NULL,
+			free_ptr(buffer));
+	if (!bak_buffer[fd])
+		bak_buffer[fd] = ft_strdup("");
+	if (!read_lines(fd, &buffer, &bak_buffer[fd], &line[fd])
+		&& !(*line[fd]) && buffer)
+		return (free_ptr(line[fd]), free_ptr(bak_buffer[fd]), NULL);
+	return (line[fd]);
 }
